@@ -12,7 +12,7 @@ const useEthers = () => {
       const ethersProvider = new ethers.providers.Web3Provider((magic as any).rpcProvider);
       setProvider(ethersProvider);
     } else {
-      console.log('User is not authenticated');
+      console.log('Magic is not authenticated');
     }
   }, [magic]);
   
