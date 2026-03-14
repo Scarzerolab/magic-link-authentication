@@ -51,6 +51,14 @@ export const login = async (req: Request, res: Response) => {
             }
         );
 
+        // set refresh token cookie
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in ms
+        });
+
         // Set access token cookie
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
