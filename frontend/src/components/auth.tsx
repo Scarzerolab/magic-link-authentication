@@ -12,7 +12,7 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState<'EMAIL' | 'OTP'>('EMAIL');
-  
+
   // We need to store the Magic "event listener" so we can talk to it in Step 2
   const [magicHandle, setMagicHandle] = useState<any>(null);
   const [error, setError] = useState('');
@@ -24,11 +24,11 @@ export default function Auth() {
 
     try {
       setError('');
-      
+
       // 1. Start the login, but explicitly tell Magic to hide its UI
-      const handle = magic.auth.loginWithEmailOTP({ 
-        email, 
-        showUI: false 
+      const handle = magic.auth.loginWithEmailOTP({
+        email,
+        showUI: false
       });
 
       // 2. Save this background process to our React state
@@ -44,11 +44,23 @@ export default function Auth() {
         setError('Invalid code. Please check your email and try again.');
       });
 
-      // 5. When the whole process finishes successfully
-      handle.then((didToken: string | null) => {
-        if (!didToken) return console.log('missing did token');
-        console.log('Login successful!', didToken);
-        router.push('/successPage'); // Send them to the dashboard
+      handle.then(async (didToken: string | null) => {
+        if (!didToken) return;
+
+        const res = await fetch('http://localhost:5000/auth/login', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${didToken}`, // backend reads this
+          },
+          credentials: 'include', // allows backend to set cookies
+        });
+
+        if (!res.ok) {
+          setError('Login failed. Please try again.');
+          return;
+        }
+
+        router.push('/successPage');
       });
 
       handle.catch((err: any) => {
@@ -65,7 +77,7 @@ export default function Auth() {
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
     if (!magicHandle) return;
-    
+
     // Send the 6-digit code the user typed back to the hidden Magic process
     magicHandle.emit('verify-email-otp', otp);
   };
@@ -73,13 +85,13 @@ export default function Auth() {
   return (
     <div className="flex flex-col gap-4 p-6 border rounded-lg max-w-sm w-full bg-white dark:bg-zinc-900 shadow-sm">
       <h2 className="text-xl font-bold">Sign In</h2>
-      
+
       {/* View 1: The Email Input */}
       {step === 'EMAIL' && (
         <form onSubmit={handleSendEmail} className="flex flex-col gap-3">
-          <input 
-            type="email" 
-            placeholder="name@company.com" 
+          <input
+            type="email"
+            placeholder="name@company.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="border border-zinc-300 p-2 rounded text-white outline-none focus:ring-2 focus:ring-blue-500"
@@ -97,9 +109,9 @@ export default function Auth() {
           <p className="text-sm text-gray-600">
             We sent a secure code to <span className="font-semibold">{email}</span>
           </p>
-          <input 
-            type="text" 
-            placeholder="123456" 
+          <input
+            type="text"
+            placeholder="123456"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
             className="border border-zinc-300 p-2 rounded text-white text-center text-2xl tracking-widest outline-none focus:ring-2 focus:ring-blue-500"
