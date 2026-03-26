@@ -9,12 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@etherspot/modular-sdk": "^6.1.1",
+    "@etherspot/transaction-kit": "^2.1.4",
     "@magic-ext/oauth2": "^15.4.1",
     "ethers": "^5.8.0",
     "magic-sdk": "^33.5.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "viem": "^2.47.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

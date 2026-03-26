@@ -6,6 +6,7 @@ import WalletDisplay from '@/src/components/walletDisplay';
 import MetadataDisplay from '@/src/components/metadataDisplay';
 import { useRouter } from 'next/navigation';
 import { fetchWithAuth } from '@/src/lib/fetchWithAuth';
+import GaslessTest from '@/src/components/GaslessTest';
 
 export default function SuccessPage() {
   const { magic } = useMagic();
@@ -47,6 +48,7 @@ export default function SuccessPage() {
       </button>
       <WalletDisplay />
       <MetadataDisplay />
+      <GaslessTest />
     </main>
   );
 }

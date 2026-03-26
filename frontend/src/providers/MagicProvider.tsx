@@ -23,7 +23,7 @@ const MagicProvider = ({ children }: { children: ReactNode }) => {
     if (process.env.NEXT_PUBLIC_MAGIC_API_KEY) {
       const magic = new MagicBase(process.env.NEXT_PUBLIC_MAGIC_API_KEY as string, {
         network: {
-          rpcUrl: "https://rpc.ankr.com/xdc",
+          rpcUrl: "https://rpc.ankr.com/xdc_testnet",
           chainId: 51,
         },
         extensions: [new OAuthExtension()]
