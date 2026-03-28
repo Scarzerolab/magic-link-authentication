@@ -6,6 +6,7 @@ import WalletDisplay from '@/src/components/walletDisplay';
 import MetadataDisplay from '@/src/components/metadataDisplay';
 import { useRouter } from 'next/navigation';
 import { fetchWithAuth } from '@/src/lib/fetchWithAuth';
+import SendXDC from '@/src/components/sendXDC';
 
 export default function SuccessPage() {
   const { magic } = useMagic();
@@ -47,6 +48,7 @@ export default function SuccessPage() {
       </button>
       <WalletDisplay />
       <MetadataDisplay />
+      <SendXDC />
     </main>
   );
 }
